@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/myprofile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="bg-green-200 text-green-800 p-2 rounded mb-4">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<form method="POST" action="{{ url_for('myprofile') }}" class="bg-white rounded-xl shadow p-6 w-full max-w-6xl mx-auto">
+
+  <!-- Personal Info -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block font-semibold mb-1">Full Name</label>
+      <input type="text" name="name" value="{{ profile.name if profile else '' }}" class="w-full border p-2 rounded" required>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Email</label>
+      <input type="email" name="email" value="{{ user.email }}" class="w-full border p-2 rounded bg-gray-100" readonly>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Age</label>
+      <input type="number" name="age" value="{{ profile.age if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Gender</label>
+      <select name="gender" class="w-full border p-2 rounded">
+        <option value="">Select Gender</option>
+        <option value="Male" {% if profile and profile.gender=='Male' %}selected{% endif %}>Male</option>
+        <option value="Female" {% if profile and profile.gender=='Female' %}selected{% endif %}>Female</option>
+        <option value="Other" {% if profile and profile.gender=='Other' %}selected{% endif %}>Other</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Weight (kg)</label>
+      <input type="number" name="weight" value="{{ profile.weight if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Height (cm)</label>
+      <input type="number" name="height" value="{{ profile.height if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+  </div>
+
+  <!-- Lifestyle -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div>
+      <label class="block font-semibold mb-1">Activity Level</label>
+      <select name="activity" class="w-full border p-2 rounded">
+        <option value="">Select</option>
+        <option value="Sedentary" {% if profile and profile.activity=='Sedentary' %}selected{% endif %}>Sedentary</option>
+        <option value="Moderate" {% if profile and profile.activity=='Moderate' %}selected{% endif %}>Moderate</option>
+        <option value="Active" {% if profile and profile.activity=='Active' %}selected{% endif %}>Active</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Sleep (hours/day)</label>
+      <input type="number" name="sleep" value="{{ profile.sleep if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Stress Level</label>
+      <select name="stress" class="w-full border p-2 rounded">
+        <option value="">Select</option>
+        <option value="Low" {% if profile and profile.stress=='Low' %}selected{% endif %}>Low</option>
+        <option value="Moderate" {% if profile and profile.stress=='Moderate' %}selected{% endif %}>Moderate</option>
+        <option value="High" {% if profile and profile.stress=='High' %}selected{% endif %}>High</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Medical Info -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block font-semibold mb-1">Allergies</label>
+      <input type="text" name="allergies" value="{{ profile.allergies if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Chronic Conditions</label>
+      <input type="text" name="conditions" value="{{ profile.conditions if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+  </div>
+
+  <!-- Health Goals -->
+  <div>
+    <label class="block font-semibold mb-1">Health Goals</label>
+    <textarea name="goals" rows="3" class="w-full border p-2 rounded">{{ profile.goals if profile else '' }}</textarea>
+  </div>
+
+  <!-- Dietary Habits -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block font-semibold mb-1">Dietary Preference</label>
+      <select name="diet" class="w-full border p-2 rounded">
+        <option value="">Select</option>
+        <option value="Vegetarian" {% if profile and profile.diet=='Vegetarian' %}selected{% endif %}>Vegetarian</option>
+        <option value="Non-Vegetarian" {% if profile and profile.diet=='Non-Vegetarian' %}selected{% endif %}>Non-Vegetarian</option>
+        <option value="Vegan" {% if profile and profile.diet=='Vegan' %}selected{% endif %}>Vegan</option>
+        <option value="Mixed" {% if profile and profile.diet=='Mixed' %}selected{% endif %}>Mixed</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">Favorite Foods</label>
+      <input type="text" name="foods" value="{{ profile.foods if profile else '' }}" class="w-full border p-2 rounded">
+    </div>
+  </div>
+
+  <!-- Fitness Routine -->
+  <div>
+    <label class="block font-semibold mb-1">Fitness Routine</label>
+    <textarea name="fitness" rows="3" class="w-full border p-2 rounded">{{ profile.fitness if profile else '' }}</textarea>
+  </div>
+
+  <button type="submit" class="w-full bg-green-600 text-white py-2 rounded font-semibold hover:bg-green-700 transition">
+    Save & Go to Dashboard
+  </button>
+</form>
+{% endblock %}

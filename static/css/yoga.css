@@ -1,0 +1,400 @@
+/* 🌿 Modern Animated Yoga & Meditation Styles */
+
+/* Basic Reset */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #f0fff4, #ccc, #fffde7);
+  background-size: 400% 400%;
+  animation: bgFlow 15s ease infinite;
+  color: #333;
+  overflow-x: hidden;
+}
+/* Card */
+.yoga-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.yoga-card:hover {
+  transform: translateY(-3px);
+}
+/* 🔹 Filter Buttons Container */
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+/* 🔹 Button Style */
+.filter-btn {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  background: #f9fafb;
+  color: #374151;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* 🔹 Hover Effect */
+.filter-btn:hover {
+  background: #22c55e;
+  color: white;
+  border-color: #22c55e;
+}
+
+/* 🔹 Active Button */
+.filter-btn.active {
+  background: #16a34a;
+  color: white;
+  border-color: #16a34a;
+}
+.dosha {
+  color: green;
+  font-weight: bold;
+}
+
+.notfor {
+  color: red;
+  font-weight: bold;
+}
+
+/* Image */
+.yoga-img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+/* Body */
+.yoga-body {
+  padding: 16px;
+}
+
+/* Title */
+.yoga-body h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+/* Meta info */
+.meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+/* Description */
+.desc {
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+/* Steps */
+.steps-box {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
+}
+
+.steps-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.steps-box ol {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.steps-box li {
+  font-size: 0.85rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+/* Floating spark animation background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3), transparent 60%),
+              radial-gradient(circle at 80% 70%, rgba(255,255,255,0.3), transparent 60%);
+  animation: floatSparks 8s linear infinite alternate;
+  z-index: -1;
+}
+
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  position: relative;
+}
+
+/* Headings */
+h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #43a047, #00796b);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  animation: fadeInDown 1s ease-out;
+}
+p.description {
+  text-align: center;
+  color: #555;
+  margin-bottom: 2rem;
+  animation: fadeIn 1.5s ease-in;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.tab {
+  padding: 0.8rem 1.5rem;
+  background: transparent;
+  font-weight: 600;
+  color: #555;
+  border: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+.tab.active {
+  color: #2e7d32;
+}
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 70%;
+  height: 3px;
+  background: linear-gradient(to right, #43a047, #66bb6a);
+  border-radius: 2px;
+  animation: underlineSlide 0.6s ease forwards;
+}
+.tab:hover {
+  color: #43a047;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  animation: fadeInUp 1s ease;
+}
+.filters input[type="search"],
+.filters select {
+  padding: 0.6rem 1rem;
+  border: 2px solid #a5d6a7;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(76,175,80,0.1);
+}
+.filters input:focus,
+.filters select:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 12px rgba(76,175,80,0.3);
+  outline: none;
+}
+
+/* Cards Grid */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  animation: fadeInUp 1.2s ease;
+}
+
+/* Card styles */
+.card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(76,175,80,0.25);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(76,175,80,0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Card text */
+.card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #2e7d32;
+}
+
+/* Info row */
+.info-row {
+  font-size: 0.9rem;
+  color: #666;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+/* Badges */
+.badges, .benefits-badges, .dosha-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.badge {
+  background-color: #43a047;
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: transform 0.3s;
+}
+.badge:hover {
+  transform: scale(1.1);
+}
+.badge-outline {
+  border: 1.5px solid #43a047;
+  background: transparent;
+  color: #43a047;
+}
+
+/* Button */
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #43a047, #66bb6a);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+button::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.6), transparent);
+  transition: left 0.5s ease;
+}
+button:hover {
+  transform: scale(1.05);
+}
+button:hover::after {
+  left: 100%;
+}
+
+/* Detail View */
+.detail {
+  background: rgba(255,255,255,0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  animation: fadeInUp 0.8s ease;
+}
+
+/* Back Button */
+.back-button {
+  background: none;
+  color: #43a047;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.back-button:hover {
+  color: #2e7d32;
+}
+
+/* Precautions */
+.precaution-list {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 8px;
+  padding: 1rem;
+  color: #6d4c41;
+}
+
+
+/* 🌟 Animations */
+@keyframes fadeIn {
+  from {opacity: 0;} to {opacity: 1;}
+}
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(30px);} to {opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeInDown {
+  from {opacity: 0; transform: translateY(-30px);} to {opacity: 1; transform: translateY(0);}
+}
+@keyframes underlineSlide {
+  from {width: 0;} to {width: 70%;}
+}
+@keyframes bgFlow {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+@keyframes floatSparks {
+  0% {background-position: 0 0, 100% 100%;}
+  100% {background-position: 100% 0, 0 100%;}
+}

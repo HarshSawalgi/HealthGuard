@@ -1,0 +1,794 @@
+{% extends "base.html" %}
+ {% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/panchkarma.css') }}">
+{% endblock %}
+{% block content %} 
+  <form id="profileForm"  class="bg-white rounded-xl shadow p-6 w-full max-w-6xl mx-auto">
+
+  <main class="max-w-7xl mx-auto p-6 sm:p-10 space-y-12">
+
+    <!-- Header & Overview -->
+    <section class="space-y-2 max-w-5xl">
+      <h1 class="text-3xl font-extrabold">Panchakarma Therapy</h1>
+      <p class="text-gray-600 text-lg max-w-xl">
+        Comprehensive detoxification and rejuvenation program consisting of five therapeutic procedures
+      </p>
+    </section>
+
+    <!-- What is Panchakarma? with Treatment Phases alongside -->
+    <section class="bg-white p-8 rounded-2xl shadow max-w-7xl flex flex-col md:flex-row gap-6">
+      <div class="flex-1 min-w-[280px]">
+        <h2 class="font-semibold text-xl mb-1">What is Panchakarma?</h2>
+        <p class="text-gray-500 mb-4 text-sm">Ancient Ayurvedic detoxification and rejuvenation system</p>
+        <p class="mb-6 leading-relaxed">
+          Panchakarma is a comprehensive detoxification and rejuvenation program that eliminates toxins from the body while restoring natural balance. It consists of five main therapeutic procedures, each targeting specific doshas and body systems.
+        </p>
+        <ul class="space-y-3 text-gray-800 text-sm max-w-lg">
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Eliminates deep-seated toxins
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Restores natural balance
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Rejuvenates body systems
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            Enhances immunity
+          </li>
+        </ul>
+      </div>
+      <aside class="flex-1 space-y-4 min-w-[280px]">
+        <div class="flex justify-between items-center">
+          <h2 class="font-semibold text-lg">Treatment Phases:</h2>
+          <button
+            aria-label="Download Guide"
+            class="flex items-center gap-2 border border-gray-300 rounded-lg py-2 px-4 text-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v4h16v-4M12 12v8M12 4v8m0 0l5-5m-5 5l-5-5"/></svg>
+            Download Guide
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="border border-gray-200 p-4 rounded-lg">
+            <h3 class="font-semibold text-base mb-1">
+              Purvakarma <span class="font-normal">(Pre-treatment)</span>
+            </h3>
+            <ul class="list-disc list-inside text-gray-700 text-sm">
+              <li>Consultation and assessment</li>
+              <li>Dietary modifications</li>
+            </ul>
+            <span class="inline-block mt-2 text-xs border border-gray-300 rounded-full px-3 py-0.5 select-none">3-7 days</span>
+          </div>
+          <div class="border border-gray-200 p-4 rounded-lg">
+            <h3 class="font-semibold text-base mb-1">
+              Pradhanakarma <span class="font-normal">(Main treatment)</span>
+            </h3>
+            <ul class="list-disc list-inside text-gray-700 text-sm">
+              <li>Main detox procedure</li>
+              <li>Continuous monitoring</li>
+            </ul>
+            <span class="inline-block mt-2 text-xs border border-gray-300 rounded-full px-3 py-0.5 select-none">1-5 days</span>
+          </div>
+          <div class="border border-gray-200 p-4 rounded-lg">
+            <h3 class="font-semibold text-base mb-1">
+              Paschatkarma <span class="font-normal">(Post-treatment)</span>
+            </h3>
+            <ul class="list-disc list-inside text-gray-700 text-sm">
+              <li>Gradual diet introduction</li>
+              <li>Rejuvenation therapies</li>
+            </ul>
+            <span class="inline-block mt-2 text-xs border border-gray-300 rounded-full px-3 py-0.5 select-none">7-14 days</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- The Five Therapies -->
+    <section class="max-w-7xl space-y-6">
+      <h2 class="text-2xl font-bold">The Five Therapies</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      
+        <!-- Card 1 -->
+
+
+        <!-- VAMANA CARD -->
+<article 
+  id="vamanaCard"
+  class="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer max-w-xl flex flex-col justify-between border border-green-100"
+>
+  <div>
+    <!-- Header -->
+    <header class="flex justify-between items-start mb-2">
+      <h3 class="font-bold text-xl text-green-800">Vamana</h3>
+      <span class="bg-green-600 text-white text-xs font-semibold rounded-full py-1 px-3 select-none shadow-sm" title="High Intensity">
+        High
+      </span>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="text-gray-700 italic mb-3">Therapeutic Vomiting</p>
+
+    <!-- Duration -->
+    <div class="flex items-center text-gray-700 mb-3 gap-3 text-sm">
+      <time dateTime="P3-7D" class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-700 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        3–7 days
+      </time>
+    </div>
+
+    <!-- Description -->
+    <p class="mb-4 text-gray-800 leading-relaxed">
+      Eliminates excess <span class="font-semibold text-green-700">Kapha dosha</span> from the upper respiratory tract and stomach.
+    </p>
+
+    <!-- Suitable For -->
+    <div>
+      <h4 class="font-semibold mb-2 text-green-800">Suitable For:</h4>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="bg-green-200 text-green-800 font-medium rounded-full py-1 px-3 select-none">Kapha disorders</span>
+        <span class="bg-green-200 text-green-800 font-medium rounded-full py-1 px-3 select-none">Respiratory issues</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-6 flex justify-between items-center text-gray-600 text-sm border-t border-green-200 pt-3">
+    <span class="italic text-green-700">Spring (Kapha season)</span>
+  </footer>
+</article>
+
+
+<!-- POPDIV -->
+<!-- VAMANA MODAL POPUP -->
+<div id="vamanaModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 transition-all duration-300 ease-out">
+  <div class="modal-content bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out">
+
+    <!-- Close Button -->
+    <button id="closeVamanaModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl font-bold transition">
+      ✖
+    </button>
+
+    <!-- Modal Content -->
+    <h2 class="text-2xl font-bold mb-2 text-green-800">Vamana Therapy (Therapeutic Emesis)</h2>
+    <p class="text-gray-600 italic mb-4">Cleansing the upper digestive and respiratory tract by controlled emesis</p>
+
+    <h3 class="font-semibold text-lg mb-2 text-green-700">Purpose:</h3>
+    <p class="text-gray-700 mb-4">
+      Vamana therapy is a detoxifying process that expels excess <strong>Kapha</strong> and toxins from the stomach and respiratory tract. 
+      It restores balance to the Kapha dosha, enhancing digestion, immunity, and respiratory function.
+    </p>
+
+    <h3 class="font-semibold text-lg mb-2 text-green-700">Procedure Steps:</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
+      <li>Pre-treatment with <strong>Snehana</strong> (oleation) and <strong>Swedana</strong> (fomentation)</li>
+      <li>Administration of herbal emetic formulations (e.g., Madanaphala, Yashtimadhu)</li>
+      <li>Controlled induction of vomiting under supervision</li>
+      <li>Rest, followed by light diet and herbal decoctions for recovery</li>
+    </ul>
+
+    <h3 class="font-semibold text-lg mb-2 text-green-700">Benefits:</h3>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li>Clears respiratory congestion, asthma, and allergies</li>
+      <li>Improves metabolism and digestive strength</li>
+      <li>Balances Kapha dosha, enhancing energy and vitality</li>
+      <li>Boosts immunity and mental clarity</li>
+    </ul>
+
+    <div class="mt-6 text-sm text-gray-500 italic">
+      *Performed under the supervision of a qualified Ayurvedic practitioner.
+    </div>
+  </div>
+</div>
+
+
+ <!--POPDIV SCRIPT-->
+
+<script>
+  // Get elements
+  const vamanaCard = document.getElementById('vamanaCard');
+  const vamanaModal = document.getElementById('vamanaModal');
+  const closeVamanaModal = document.getElementById('closeVamanaModal');
+  const vamanaContent = vamanaModal.querySelector('.modal-content');
+
+  // Helper function for smooth open
+  function openModal() {
+    vamanaModal.classList.remove('hidden');
+    setTimeout(() => {
+      vamanaModal.classList.add('backdrop-blur-sm', 'bg-opacity-50');
+      vamanaContent.classList.remove('scale-95', 'opacity-0');
+      vamanaContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  }
+
+  // Helper function for smooth close
+  function closeModal() {
+    vamanaContent.classList.remove('scale-100', 'opacity-100');
+    vamanaContent.classList.add('scale-95', 'opacity-0');
+    vamanaModal.classList.remove('backdrop-blur-sm');
+    setTimeout(() => {
+      vamanaModal.classList.add('hidden');
+    }, 250);
+  }
+
+  // Open modal on card click
+  vamanaCard.addEventListener('click', openModal);
+
+  // Close modal on cancel button
+  closeVamanaModal.addEventListener('click', closeModal);
+
+  // Close modal when clicking outside content
+  vamanaModal.addEventListener('click', (e) => {
+    if (e.target === vamanaModal) {
+      closeModal();
+    }
+  });
+</script>
+
+
+<!-- Card 5 -->
+<article 
+  id="raktamokshanaCard"
+  class="bg-gradient-to-br from-rose-50 to-red-100 p-6 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer max-w-xl flex flex-col justify-between border border-red-100"
+>
+  <div>
+    <!-- Header -->
+    <header class="flex justify-between items-start mb-2">
+      <h3 class="font-bold text-xl text-red-800">Raktamokshana</h3>
+      <span class="bg-red-600 text-white text-xs font-semibold rounded-full py-1 px-3 select-none shadow-sm" title="Very High Intensity">
+        Very High
+      </span>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="text-gray-700 italic mb-3">Bloodletting Therapy</p>
+
+    <!-- Duration -->
+    <div class="flex items-center text-gray-700 mb-3 gap-3 text-sm">
+      <time dateTime="P1-3Sessions" class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-700 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        1–3 sessions
+      </time>
+    </div>
+
+    <!-- Description -->
+    <p class="mb-4 text-gray-800 leading-relaxed">
+      Removes impure blood and toxins from the <span class="font-semibold text-red-700">circulatory system</span>, improving skin and promoting detoxification.
+    </p>
+
+    <!-- Suitable For -->
+    <div>
+      <h4 class="font-semibold mb-2 text-red-800">Suitable For:</h4>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="bg-red-200 text-red-900 font-medium rounded-full py-1 px-3 select-none">Blood disorders</span>
+        <span class="bg-red-200 text-red-900 font-medium rounded-full py-1 px-3 select-none">Skin diseases</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-6 flex justify-between items-center text-gray-700 text-sm border-t border-red-200 pt-3">
+    <span class="italic text-red-800">☀️ Summer & Autumn Seasons</span>
+  </footer>
+</article>
+
+<!-- 🌿 RAKTAMOKSHANA MODAL POPUP -->
+<div id="raktamokshanaModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 transition-all duration-300 ease-out">
+  <div class="modal-content bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-8 relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out">
+
+    <!-- Close Button -->
+    <button id="closeRaktamokshanaModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl font-bold transition">✖</button>
+
+    <h2 class="text-2xl font-bold mb-2 text-red-800">Raktamokshana Therapy (Bloodletting)</h2>
+    <p class="text-gray-600 italic mb-4">Purification of the blood to remove toxins and balance the Pitta dosha.</p>
+
+    <h3 class="font-semibold text-lg mb-2 text-red-700">Purpose:</h3>
+    <p class="text-gray-700 mb-4">
+      Raktamokshana helps eliminate impure blood and reduce excessive <strong>Pitta dosha</strong>. It detoxifies the circulatory system and promotes skin health.
+    </p>
+
+    <h3 class="font-semibold text-lg mb-2 text-red-700">Procedure Steps:</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
+      <li>Selection of appropriate bloodletting technique (leech or venesection)</li>
+      <li>Localized cleaning and mild stimulation</li>
+      <li>Controlled removal of impure blood</li>
+      <li>Post-procedure care with antiseptic herbs and light diet</li>
+    </ul>
+
+    <h3 class="font-semibold text-lg mb-2 text-red-700">Benefits:</h3>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li>Purifies blood and clears skin diseases</li>
+      <li>Reduces inflammation and acne</li>
+      <li>Balances Pitta and improves complexion</li>
+      <li>Enhances overall detoxification</li>
+    </ul>
+
+    <div class="mt-6 text-sm text-gray-500 italic">
+      *Should be performed under expert Ayurvedic supervision.
+    </div>
+  </div>
+</div>
+
+<!-- 🌿 SCRIPT FOR RAKTAMOKSHANA POPUP -->
+<script>
+  const raktamokshanaCard = document.getElementById('raktamokshanaCard');
+  const raktamokshanaModal = document.getElementById('raktamokshanaModal');
+  const closeRaktamokshanaModal = document.getElementById('closeRaktamokshanaModal');
+  const raktamokshanaContent = raktamokshanaModal.querySelector('.modal-content');
+
+  // Open Modal
+  raktamokshanaCard.addEventListener('click', () => {
+    raktamokshanaModal.classList.remove('hidden');
+    setTimeout(() => {
+      raktamokshanaModal.classList.add('backdrop-blur-md', 'bg-opacity-50');
+      raktamokshanaContent.classList.remove('scale-95', 'opacity-0');
+      raktamokshanaContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  });
+
+  // Close Modal
+  function closeModal() {
+    raktamokshanaContent.classList.remove('scale-100', 'opacity-100');
+    raktamokshanaContent.classList.add('scale-95', 'opacity-0');
+    raktamokshanaModal.classList.remove('backdrop-blur-md');
+    setTimeout(() => {
+      raktamokshanaModal.classList.add('hidden');
+    }, 250);
+  }
+
+  closeRaktamokshanaModal.addEventListener('click', closeModal);
+  raktamokshanaModal.addEventListener('click', (e) => {
+    if (e.target === raktamokshanaModal) closeModal();
+  });
+</script>
+
+
+
+       <!-- 🌿 BASTI CARD -->
+<article 
+  id="bastiCard"
+  class="bg-gradient-to-br from-indigo-50 to-blue-100 p-6 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer max-w-xl flex flex-col justify-between border border-indigo-100"
+>
+  <div>
+    <!-- Header -->
+    <header class="flex justify-between items-start mb-2">
+      <h3 class="font-bold text-xl text-indigo-800">Basti</h3>
+      <span class="bg-indigo-600 text-white text-xs font-semibold rounded-full py-1 px-3 select-none shadow-sm" title="Medium Intensity">
+        Medium
+      </span>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="text-gray-700 italic mb-3">Medicated Enema</p>
+
+    <!-- Duration -->
+    <div class="flex items-center text-gray-700 mb-3 gap-3 text-sm">
+      <time dateTime="P8-30D" class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-indigo-700 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        8–30 days
+      </time>
+    </div>
+
+    <!-- Description -->
+    <p class="mb-4 text-gray-800 leading-relaxed">
+      Eliminates excess <span class="font-semibold text-indigo-700">Vata dosha</span> from the colon and nervous system.
+    </p>
+
+    <!-- Suitable For -->
+    <div>
+      <h4 class="font-semibold mb-2 text-indigo-800">Suitable For:</h4>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="bg-indigo-200 text-indigo-900 font-medium rounded-full py-1 px-3 select-none">Vata disorders</span>
+        <span class="bg-indigo-200 text-indigo-900 font-medium rounded-full py-1 px-3 select-none">Joint problems</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-6 flex justify-between items-center text-gray-700 text-sm border-t border-indigo-200 pt-3">
+    <span class="italic text-indigo-800">🌧️ Monsoon (Vata season)</span>
+  </footer>
+</article>
+
+<!-- 🌿 BASTI MODAL POPUP -->
+<div id="bastiModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative transform transition-all duration-300 scale-95 hover:scale-100">
+
+    <!-- Cancel Button -->
+    <button id="closeBastiModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl">
+      ✖
+    </button>
+
+    <!-- Modal Content -->
+    <h2 class="text-2xl font-bold text-indigo-800 mb-2">Basti Therapy (Medicated Enema)</h2>
+    <p class="text-gray-600 italic mb-4">Nourishing and detoxifying the colon to balance the Vata dosha.</p>
+
+    <h3 class="font-semibold text-lg text-indigo-700 mb-2">Purpose:</h3>
+    <p class="text-gray-700 mb-4">
+      Basti therapy primarily targets the <strong>Vata dosha</strong>, helping to cleanse the colon and rejuvenate the body. 
+      It restores lubrication in joints, improves digestion, and strengthens the nervous system.
+    </p>
+
+    <h3 class="font-semibold text-lg text-indigo-700 mb-2">Procedure Steps:</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
+      <li>Preparation with Snehana (oleation) and Swedana (sudation)</li>
+      <li>Administration of medicated oil or herbal decoction enema</li>
+      <li>Gentle expulsion of toxins from the colon</li>
+      <li>Post-care diet and rejuvenating herbs</li>
+    </ul>
+
+    <h3 class="font-semibold text-lg text-indigo-700 mb-2">Benefits:</h3>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li>Relieves constipation and joint stiffness</li>
+      <li>Improves flexibility and nervous system health</li>
+      <li>Balances Vata dosha and enhances vitality</li>
+      <li>Supports detoxification and longevity</li>
+    </ul>
+
+    <div class="mt-6 text-sm text-gray-500 italic">
+      *Performed under qualified Ayurvedic supervision only.
+    </div>
+  </div>
+</div>
+
+<!-- 🌿 SCRIPT FOR BASTI POPUP -->
+<script>
+  const bastiCard = document.getElementById('bastiCard');
+  const bastiModal = document.getElementById('bastiModal');
+  const closeBastiModal = document.getElementById('closeBastiModal');
+
+  // Open modal on click
+  bastiCard.addEventListener('click', () => {
+    bastiModal.classList.remove('hidden');
+  });
+
+  // Close modal on cancel button
+  closeBastiModal.addEventListener('click', () => {
+    bastiModal.classList.add('hidden');
+  });
+
+  // Close modal when clicking outside
+  bastiModal.addEventListener('click', (e) => {
+    if (e.target === bastiModal) {
+      bastiModal.classList.add('hidden');
+    }
+  });
+</script>
+
+
+        <!-- 🌼 NASYA CARD -->
+<article 
+  id="nasyaCard"
+  class="bg-gradient-to-br from-amber-50 to-yellow-100 p-6 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer max-w-xl flex flex-col justify-between border border-yellow-100"
+>
+  <div>
+    <!-- Header -->
+    <header class="flex justify-between items-start mb-2">
+      <h3 class="font-bold text-xl text-amber-800">Nasya</h3>
+      <span class="bg-yellow-500 text-white text-xs font-semibold rounded-full py-1 px-3 select-none shadow-sm" title="Low Intensity">
+        Low
+      </span>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="text-gray-700 italic mb-3">Nasal Administration Therapy</p>
+
+    <!-- Duration -->
+    <div class="flex items-center text-gray-700 mb-3 gap-3 text-sm">
+      <time dateTime="P7-14D" class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-700 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        7–14 days
+      </time>
+    </div>
+
+    <!-- Description -->
+    <p class="mb-4 text-gray-800 leading-relaxed">
+      Eliminates toxins from the <span class="font-semibold text-amber-700">head and neck region</span> through the nasal passages, improving clarity and vitality.
+    </p>
+
+    <!-- Suitable For -->
+    <div>
+      <h4 class="font-semibold mb-2 text-amber-800">Suitable For:</h4>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="bg-yellow-200 text-amber-900 font-medium rounded-full py-1 px-3 select-none">Head & Neck Disorders</span>
+        <span class="bg-yellow-200 text-amber-900 font-medium rounded-full py-1 px-3 select-none">Respiratory Issues</span>
+        <span class="bg-yellow-200 text-amber-900 font-medium rounded-full py-1 px-3 select-none">Sinus Problems</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-6 flex justify-between items-center text-gray-700 text-sm border-t border-yellow-200 pt-3">
+    <span class="italic text-amber-800">🌼 Spring & Monsoon (Kapha season)</span>
+  </footer>
+</article>
+
+<!-- 🌿 NASYA MODAL POPUP -->
+<div id="nasyaModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative transform transition-all duration-300 scale-95 hover:scale-100">
+
+    <!-- Cancel Button -->
+    <button id="closeNasyaModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl">
+      ✖
+    </button>
+
+    <!-- Modal Content -->
+    <h2 class="text-2xl font-bold text-amber-800 mb-2">Nasya Therapy (Nasal Administration)</h2>
+    <p class="text-gray-600 italic mb-4">Cleansing and nourishing the head region through medicated oil drops in the nose.</p>
+
+    <h3 class="font-semibold text-lg text-amber-700 mb-2">Purpose:</h3>
+    <p class="text-gray-700 mb-4">
+      Nasya helps eliminate toxins from the <strong>sinus, throat, and head region</strong>. 
+      It improves sensory functions, enhances focus, and brings mental clarity.
+    </p>
+
+    <h3 class="font-semibold text-lg text-amber-700 mb-2">Procedure Steps:</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
+      <li>Face and neck are gently massaged with warm medicated oil.</li>
+      <li>Steam therapy is given to open the nasal channels.</li>
+      <li>Herbal oil drops are administered in each nostril.</li>
+      <li>Patient inhales deeply to ensure full absorption.</li>
+    </ul>
+
+    <h3 class="font-semibold text-lg text-amber-700 mb-2">Benefits:</h3>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li>Relieves headaches, migraines, and sinus congestion</li>
+      <li>Improves breathing and mental clarity</li>
+      <li>Enhances memory and concentration</li>
+      <li>Prevents premature greying and hair fall</li>
+    </ul>
+
+    <div class="mt-6 text-sm text-gray-500 italic">
+      *Performed under qualified Ayurvedic supervision only.
+    </div>
+  </div>
+</div>
+
+<!-- 🌿 SCRIPT FOR NASYA POPUP -->
+<script>
+  const nasyaCard = document.getElementById('nasyaCard');
+  const nasyaModal = document.getElementById('nasyaModal');
+  const closeNasyaModal = document.getElementById('closeNasyaModal');
+
+  // Open modal
+  nasyaCard.addEventListener('click', () => {
+    nasyaModal.classList.remove('hidden');
+  });
+
+  // Close modal
+  closeNasyaModal.addEventListener('click', () => {
+    nasyaModal.classList.add('hidden');
+  });
+
+  // Close when clicking outside modal
+  nasyaModal.addEventListener('click', (e) => {
+    if (e.target === nasyaModal) {
+      nasyaModal.classList.add('hidden');
+    }
+  });
+</script>
+
+<!-- ❤️ RAKTAMOKSHANA CARD -->
+<article 
+  id="raktamokshanaCard"
+  class="bg-gradient-to-br from-rose-50 via-red-50 to-red-100 p-6 rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ease-out cursor-pointer max-w-xl flex flex-col justify-between border border-red-100 relative overflow-hidden"
+>
+  <!-- Animated Glow Effect -->
+  <div class="absolute inset-0 bg-gradient-to-br from-red-100 to-transparent opacity-0 hover:opacity-30 transition-opacity duration-700 rounded-2xl"></div>
+
+  <div class="relative z-10">
+    <!-- Header -->
+    <header class="flex justify-between items-start mb-2">
+      <h3 class="font-bold text-xl text-red-800">Raktamokshana</h3>
+      <span class="bg-red-600 text-white text-xs font-semibold rounded-full py-1 px-3 select-none shadow-sm" title="Very High Intensity">
+        Very High
+      </span>
+    </header>
+
+    <!-- Subtitle -->
+    <p class="text-gray-700 italic mb-3">Bloodletting Therapy</p>
+
+    <!-- Duration -->
+    <div class="flex items-center text-gray-700 mb-3 gap-3 text-sm">
+      <time dateTime="P1-3Sessions" class="flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-700 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        1–3 sessions
+      </time>
+    </div>
+
+    <!-- Description -->
+    <p class="mb-4 text-gray-800 leading-relaxed">
+      Purifies the blood by removing <span class="font-semibold text-red-700">toxins and impurities</span> from the circulatory system, promoting healthy skin and organ function.
+    </p>
+
+    <!-- Suitable For -->
+    <div>
+      <h4 class="font-semibold mb-2 text-red-800">Suitable For:</h4>
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="bg-red-200 text-red-900 font-medium rounded-full py-1 px-3 select-none">Blood Disorders</span>
+        <span class="bg-red-200 text-red-900 font-medium rounded-full py-1 px-3 select-none">Skin Diseases</span>
+        <span class="bg-red-200 text-red-900 font-medium rounded-full py-1 px-3 select-none">Acne & Rashes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-6 flex justify-between items-center text-gray-700 text-sm border-t border-red-200 pt-3">
+    <span class="italic text-red-800">☀️ Summer & Autumn (Pitta season)</span>
+  </footer>
+</article>
+
+<!-- ❤️ RAKTAMOKSHANA MODAL POPUP -->
+<div id="raktamokshanaModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+  <div class="bg-white/90 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative transform transition-all duration-500 scale-95 hover:scale-100 border border-red-100 backdrop-blur-xl">
+
+    <!-- Close Button -->
+    <button id="closeRaktamokshanaModal" class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl transition-colors duration-300">
+      ✖
+    </button>
+
+    <!-- Modal Content -->
+    <h2 class="text-2xl font-bold text-red-800 mb-2">Raktamokshana Therapy (Bloodletting)</h2>
+    <p class="text-gray-600 italic mb-4">An Ayurvedic detoxification therapy designed to cleanse the blood and restore balance.</p>
+
+    <h3 class="font-semibold text-lg text-red-700 mb-2">Purpose:</h3>
+    <p class="text-gray-700 mb-4 leading-relaxed">
+      Raktamokshana aims to remove impure blood to alleviate <strong>Pitta-related disorders</strong>. It purifies the system, supports skin rejuvenation, and promotes overall health.
+    </p>
+
+    <h3 class="font-semibold text-lg text-red-700 mb-2">Procedure Steps:</h3>
+    <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
+      <li>Identify the affected area and perform mild oil massage.</li>
+      <li>Use of sterilized tools or leeches for gentle bloodletting.</li>
+      <li>Extraction of impure blood to cleanse the system.</li>
+      <li>Application of healing herbs and dietary care post-procedure.</li>
+    </ul>
+
+    <h3 class="font-semibold text-lg text-red-700 mb-2">Benefits:</h3>
+    <ul class="list-disc list-inside text-gray-700 space-y-1">
+      <li>Improves skin glow and complexion</li>
+      <li>Reduces acne, eczema, and skin rashes</li>
+      <li>Relieves inflammation and joint pain</li>
+      <li>Enhances blood purification and liver function</li>
+    </ul>
+
+    <div class="mt-6 text-sm text-gray-500 italic">
+      *Performed only by trained Ayurvedic practitioners in sterile conditions.
+    </div>
+  </div>
+</div>
+
+<!-- ❤️ SCRIPT FOR RAKTAMOKSHANA POPUP -->
+<script>
+  const raktamokshanaCard = document.getElementById('raktamokshanaCard');
+  const raktamokshanaModal = document.getElementById('raktamokshanaModal');
+  const closeRaktamokshanaModal = document.getElementById('closeRaktamokshanaModal');
+
+  // Open modal with fade animation
+  raktamokshanaCard.addEventListener('click', () => {
+    raktamokshanaModal.classList.remove('hidden');
+    raktamokshanaModal.classList.add('flex');
+  });
+
+  // Close modal
+  closeRaktamokshanaModal.addEventListener('click', () => {
+    raktamokshanaModal.classList.add('hidden');
+  });
+
+  // Close on outside click
+  raktamokshanaModal.addEventListener('click', (e) => {
+    if (e.target === raktamokshanaModal) {
+      raktamokshanaModal.classList.add('hidden');
+    }
+  });
+</script>
+</div>
+    </section>
+
+    <!-- Treatment Timeline -->
+    <section class="max-w-7xl bg-white p-8 rounded-2xl shadow">
+      <h2 class="font-bold text-2xl mb-1">Treatment Timeline</h2>
+      <p class="text-gray-600 mb-8 max-w-lg">Understanding the three phases of Panchakarma</p>
+      <div class="space-y-8">
+        <!-- Timeline step -->
+        <article class="grid grid-cols-[40px_minmax(0,1fr)_80px] gap-6 items-start">
+          <div class="relative flex justify-center">
+            <div class="flex flex-col">
+              <span class="z-10 bg-green-200 text-green-800 rounded-full w-8 h-8 flex items-center justify-center font-semibold select-none">1</span>
+              <span class="border-l-2 border-green-300 h-full mt-1 ml-3"></span>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Purvakarma <span class="font-normal">(Pre-treatment)</span></h3>
+            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-gray-700 text-sm">
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Consultation and assessment</li>
+                <li>Oleation therapy (Snehana)</li>
+                <li>Mental preparation</li>
+              </ul>
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Dietary modifications</li>
+                <li>Fomentation therapy (Swedana)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-xs text-gray-700 rounded-full border border-gray-300 py-0.5 px-3 select-none text-center self-start">3-7 days</div>
+        </article>
+        <!-- Timeline step -->
+        <article class="grid grid-cols-[40px_minmax(0,1fr)_80px] gap-6 items-start">
+          <div class="relative flex justify-center">
+            <div class="flex flex-col">
+              <span class="z-10 bg-green-200 text-green-800 rounded-full w-8 h-8 flex items-center justify-center font-semibold select-none">2</span>
+              <span class="border-l-2 border-green-300 h-full mt-1 ml-3"></span>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Pradhanakarma <span class="font-normal">(Main treatment)</span></h3>
+            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-gray-700 text-sm">
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Main detox procedure</li>
+                <li>Supportive therapies</li>
+                <li>Assessment of results</li>
+              </ul>
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Continuous monitoring</li>
+                <li>Immediate care</li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-xs text-gray-700 rounded-full border border-gray-300 py-0.5 px-3 select-none text-center self-start">1-5 days</div>
+        </article>
+        <!-- Timeline step -->
+        <article class="grid grid-cols-[40px_minmax(0,1fr)_80px] gap-6 items-start">
+          <div class="relative flex justify-center">
+            <div class="flex flex-col">
+              <span class="z-10 bg-green-200 text-green-800 rounded-full w-8 h-8 flex items-center justify-center font-semibold select-none">3</span>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-semibold text-lg mb-1">Paschatkarma <span class="font-normal">(Post-treatment)</span></h3>
+            <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-gray-700 text-sm">
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Gradual diet introduction</li>
+                <li>Lifestyle counseling</li>
+                <li>Maintenance protocols</li>
+              </ul>
+              <ul class="space-y-1 list-disc pl-5">
+                <li>Rejuvenation therapies</li>
+                <li>Follow-up consultations</li>
+              </ul>
+            </div>
+          </div>
+          <div class="text-xs text-gray-700 rounded-full border border-gray-300 py-0.5 px-3 select-none text-center self-start">7-14 days</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <section class="max-w-7xl bg-red-50 border border-red-200 rounded-lg p-6 text-red-800">
+      <div class="flex items-center gap-2 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+        <h3 class="text-lg font-semibold">Important Medical Disclaimer</h3>
+      </div>
+      <p><strong>Professional Supervision Required:</strong> Panchakarma therapies should only be performed under the guidance of qualified Ayurvedic practitioners in proper clinical settings.</p>
+      <p><strong>Individual Assessment:</strong> Each person requires individual assessment to determine suitability for specific therapies.</p>
+      <p><strong>Medical Consultation:</strong> Consult with healthcare providers before beginning any Panchakarma program, especially if you have existing medical conditions.</p>
+    </section>
+
+  </main>
+{% endblock %}

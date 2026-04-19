@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+ {% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/routine.css') }}">
+{% endblock %}
+{% block content %} 
+  <form id="profileForm"  class="bg-white rounded-xl shadow p-6 w-full max-w-6xl mx-auto">
+<div class="container">
+  <h1>Daily Routine (Dinacharya)</h1>
+  <p class="subtitle">Create your personalized Ayurvedic daily routine based on your dosha for optimal health and balance</p>
+
+  <!-- Dosha Selection -->
+  <div class="dosha-selection" id="doshaSelection">
+    <div class="dosha-card dosha-vata" data-dosha="vata">
+      <div class="dosha-name">Vata Routine</div>
+      <div class="dosha-desc">Grounding and stabilizing routine for Vata constitution</div>
+    </div>
+    <div class="dosha-card dosha-pitta" data-dosha="pitta">
+      <div class="dosha-name">Pitta Routine</div>
+      <div class="dosha-desc">Cooling and calming routine for Pitta constitution</div>
+    </div>
+    <div class="dosha-card dosha-kapha" data-dosha="kapha">
+      <div class="dosha-name">Kapha Routine</div>
+      <div class="dosha-desc">Energizing and stimulating routine for Kapha constitution</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- Main Routine -->
+    <div class="main-content">
+      <div class="routine-section">
+        <div class="routine-header">
+          <div>
+            <h2 id="routineName">Vata Routine</h2>
+            <p id="routineDescription">Grounding and stabilizing routine for Vata constitution</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline btn-small" id="downloadBtn">Download</button>
+            <button class="btn btn-outline btn-small" id="resetBtn">Reset Progress</button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <div class="progress-text" id="progressText">0% Complete</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-tab="all">All Day</div>
+          <div class="tab" data-tab="morning">Morning</div>
+          <div class="tab" data-tab="afternoon">Afternoon</div>
+          <div class="tab" data-tab="evening">Evening</div>
+        </div>
+
+        <!-- Routine List -->
+        <div class="routine-list" id="routineList">
+          <!-- JS inserts routine items here -->
+        </div>
+      </div>
+    </div>
+    <!-- Congratulation Overlay -->
+<div id="congratsOverlay" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-10 rounded-2xl text-center shadow-lg max-w-md">
+    <h2 class="text-3xl font-bold text-green-600 mb-4">🎉 Congratulations! 🎉</h2>
+    <p class="text-gray-700 mb-6">You have completed your daily routine.</p>
+    <button id="closeCongrats" class="bg-green-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700 transition">Close</button>
+  </div>
+</div>
+
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="card">
+        <h3>Quick Tips</h3>
+        <div class="tips-list">
+          <div class="morning">
+            <strong>Morning:</strong> Start with gratitude and set positive intentions
+          </div>
+          <div class="midday">
+            <strong>Midday:</strong> Eat your largest meal when digestion is strongest
+          </div>
+          <div class="evening">
+            <strong>Evening:</strong> Wind down gradually and avoid stimulation
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Seasonal Adjustments</h3>
+        <div class="season-tabs" id="seasonTabs">
+          <div class="season-tab active" data-season="spring">Spring</div>
+          <div class="season-tab" data-season="winter">Winter</div>
+        </div>
+        <div class="season-content" id="seasonContent">
+          <ul>
+            <li>Wake up earlier</li>
+            <li>Increase exercise</li>
+            <li>Eat lighter foods</li>
+            <li>Practice detox</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+ {% block scripts %}
+
+<script>
+  // Data: routine templates
+let routineTemplates = {};
+
+async function loadRoutineData() {
+  const res = await fetch("/api/routine");
+  const data = await res.json();
+
+  console.log("API DATA:", data);
+
+  routineTemplates = data[0].routineTemplates;
+
+  console.log("Fixed Templates:", routineTemplates);
+
+  renderRoutine();
+}
+
+  let selectedDosha = 'vata';
+  let completedTasks = {}; // { index: true/false }
+  let activeTab = 'all';
+
+  // Elements
+  const doshaCards = document.querySelectorAll('.dosha-card');
+  const routineNameEl = document.getElementById('routineName');
+  const routineDescEl = document.getElementById('routineDescription');
+  const routineListEl = document.getElementById('routineList');
+  const progressBarFill = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const tabs = document.querySelectorAll('.tab');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  // Seasonal tabs
+  const seasonTabs = document.querySelectorAll('.season-tab');
+  const seasonContent = document.getElementById('seasonContent');
+
+  // Initialize dosha cards selection
+  function updateDoshaSelection() {
+    doshaCards.forEach(card => {
+      card.classList.toggle('selected', card.dataset.dosha === selectedDosha);
+    });
+  }
+
+  // Render routine list according to selected dosha and active tab
+  function renderRoutine() {
+  const routine = routineTemplates[selectedDosha];
+
+  // ✅ ADD THIS SAFETY CHECK
+  if (!routine) {
+    console.error("No routine found for:", selectedDosha);
+    return;
+  }
+
+  routineNameEl.textContent = routine.name;
+  routineDescEl.textContent = routine.description;
+
+    // Filter schedule based on tab
+    let itemsToShow = [];
+    if (activeTab === 'all') {
+      itemsToShow = routine.schedule;
+    } else {
+      itemsToShow = routine.schedule.filter(item => item.category === activeTab);
+    }
+
+    routineListEl.innerHTML = '';
+
+    itemsToShow.forEach((item, idx) => {
+      // Need global index to track completion correctly
+      // Find global index of item in full schedule
+      const globalIndex = routine.schedule.indexOf(item);
+
+      const doneClass = completedTasks[globalIndex] ? 'done' : '';
+      const btnText = completedTasks[globalIndex] ? '✓ Done' : 'Mark Done';
+
+      const div = document.createElement('div');
+      div.className = `routine-item ${doneClass}`;
+
+      div.innerHTML = `
+        <div class="routine-time">${item.time}</div>
+        <div class="routine-activity">
+          <h4>${item.activity}</h4>
+          <p>${item.description}</p>
+        </div>
+        <div class="routine-actions">
+          <button class="btn-done" data-index="${globalIndex}">${btnText}</button>
+        </div>
+      `;
+
+      routineListEl.appendChild(div);
+    });
+
+    updateProgress();
+    attachMarkDoneListeners();
+  }
+
+  // Attach event listeners to "Mark Done" buttons
+  function attachMarkDoneListeners() {
+    const buttons = routineListEl.querySelectorAll('.btn-done');
+    buttons.forEach(btn => {
+      btn.onclick = () => {
+        const index = btn.dataset.index;
+        completedTasks[index] = !completedTasks[index];
+        renderRoutine();
+      };
+    });
+  }
+
+  // Update progress bar and text
+ function updateProgress() {
+  const routine = routineTemplates[selectedDosha];
+  const total = routine.schedule.length;
+  const completedCount = Object.values(completedTasks).filter(Boolean).length;
+  const percent = Math.round((completedCount / total) * 100);
+
+  progressBarFill.style.width = percent + '%';
+  progressText.textContent = percent + '% Complete';
+
+  // Show congrats overlay and trigger confetti if 100%
+  const overlay = document.getElementById('congratsOverlay');
+  if (percent === 100) {
+    overlay.classList.remove('hidden');
+
+    // Confetti animation
+    confetti({
+      particleCount: 200,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#4caf50', '#22c55e', '#ef4444', '#fbbf24', '#3b82f6']
+    });
+  }
+}
+
+function showCongrats() {
+  const overlay = document.getElementById('congratsOverlay');
+  overlay.classList.remove('hidden');
+
+  // Continuous confetti rain
+  const duration = 5000; // 5 seconds
+  const animationEnd = Date.now() + duration;
+  const colors = ['#4caf50', '#22c55e', '#ef4444', '#fbbf24', '#3b82f6', '#d946ef', '#f97316'];
+
+  (function frame() {
+    // stop when time's up
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) return;
+
+    confetti({
+      particleCount: 5,
+      angle: 90,
+      spread: 60,
+      startVelocity: 20,
+      ticks: 200,
+      origin: { x: Math.random(), y: 0 },
+      colors: colors
+    });
+
+    requestAnimationFrame(frame);
+  })();
+}
+
+// Close button
+document.getElementById('closeCongrats').addEventListener('click', () => {
+  document.getElementById('congratsOverlay').classList.add('hidden');
+});
+
+// Call this in updateProgress when 100%
+function updateProgress() {
+  const routine = routineTemplates[selectedDosha];
+  const total = routine.schedule.length;
+  const completedCount = Object.values(completedTasks).filter(Boolean).length;
+  const percent = Math.round((completedCount / total) * 100);
+
+  progressBarFill.style.width = percent + '%';
+  progressText.textContent = percent + '% Complete';
+
+  if (percent === 100) {
+    showCongrats(); // show overlay + confetti rain
+  }
+}
+
+
+
+document.getElementById('closeCongrats').addEventListener('click', () => {
+  document.getElementById('congratsOverlay').classList.add('hidden');
+});
+
+
+  // Download routine as text file
+  function downloadRoutine() {
+    const routine = routineTemplates[selectedDosha];
+    let content = `AYURVEDA DAILY ROUTINE - ${routine.name}\n`;
+    content += '='.repeat(40) + '\n\n';
+    content += routine.description + '\n\n';
+
+    ['morning', 'afternoon', 'evening'].forEach(period => {
+      content += period.toUpperCase() + ' ROUTINE:\n';
+      routine.schedule
+        .filter(item => item.category === period)
+        .forEach(item => {
+          content += `${item.time} - ${item.activity}: ${item.description}\n`;
+        });
+      content += '\n';
+    });
+
+    content += 'Generated by AyurVeda App - Ancient Wisdom for Modern Wellness\n';
+
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `daily-routine-${selectedDosha}-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Reset completed tasks
+  function resetProgress() {
+    completedTasks = {};
+    renderRoutine();
+  }
+
+  // Handle dosha card clicks
+  doshaCards.forEach(card => {
+    card.addEventListener('click', () => {
+      selectedDosha = card.dataset.dosha;
+      completedTasks = {}; // Reset progress when dosha changes
+      updateDoshaSelection();
+      renderRoutine();
+    });
+  });
+
+  // Handle tabs click
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      activeTab = tab.dataset.tab;
+      renderRoutine();
+    });
+  });
+
+  // Download button
+  downloadBtn.addEventListener('click', downloadRoutine);
+
+  // Reset button
+  resetBtn.addEventListener('click', resetProgress);
+
+  // Seasonal tabs logic
+  const seasonalData = {
+    spring: [
+      "Wake up earlier",
+      "Increase exercise",
+      "Eat lighter foods",
+      "Practice detox"
+    ],
+    winter: [
+      "Sleep a bit longer",
+      "Warm oil massage",
+      "Eat warming foods",
+      "Stay hydrated"
+    ]
+  };
+
+  seasonTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      seasonTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const season = tab.dataset.season;
+      renderSeasonContent(season);
+    });
+  });
+
+  function renderSeasonContent(season) {
+    const items = seasonalData[season];
+    seasonContent.innerHTML = `<ul>${items.map(i => `<li>• ${i}</li>`).join('')}</ul>`;
+  }
+
+  // Initialize page
+  updateDoshaSelection();
+  loadRoutineData();
+  renderSeasonContent('spring');
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+{% endblock %}

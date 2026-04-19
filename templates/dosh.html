@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dosh.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container" id="app">
+  <!-- Quiz Header -->
+  <div id="quiz-header" class="text-center">
+    <div class="badge">Dosha Assessment</div>
+    <h1>Discover Your Ayurvedic Body Type</h1>
+    <p>Answer these questions to understand your unique constitution</p>
+  </div>
+
+  <!-- Progress -->
+  <div id="progress-container" style="margin-bottom: 16px;">
+    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:#6b7280; margin-bottom:4px;">
+      <span id="question-counter">Question 1 of 10</span>
+      <span id="progress-percent">10% Complete</span>
+    </div>
+    <div class="progress-bar" aria-label="Quiz progress">
+      <div class="progress-fill" id="progress-fill" style="width: 0;"></div>
+    </div>
+  </div>
+
+  <!-- Question -->
+  <div id="question-container">
+    <div class="question" id="question-text">Loading...</div>
+    <ul class="options" id="options-list"></ul>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <button id="prev-btn" disabled>
+      &#8592; Previous
+    </button>
+    <button id="next-btn" disabled>
+      Next &#8594;
+    </button>
+  </div>
+
+  <!-- Results -->
+  <div id="result-container" style="display:none;">
+    <div class="result">
+      <div class="result-badge">Quiz Complete!</div>
+      <h2>Your Dosha Result</h2>
+      <p id="result-description"></p>
+
+      <div class="dosha-circle" id="dosha-circle">V</div>
+      <div id="dosha-element" class="small-text"></div>
+
+      <div class="dosha-distribution" id="dosha-distribution"></div>
+
+      <h3>Key Characteristics</h3>
+      <ul id="characteristics-list"></ul>
+
+      <h3>Recommended Herbs</h3>
+      <div class="badges" id="herbs-list"></div>
+
+      <h3>Diet Recommendations</h3>
+      <ul id="diet-list"></ul>
+
+      <h3>Lifestyle Tips</h3>
+      <ul id="lifestyle-list"></ul>
+
+      <div class="actions">
+        <button id="download-btn">&#128190; Download Report</button>
+        <button id="share-btn" class="outline">&#128257; Share Results</button>
+        <button id="reset-btn" class="outline">&#8634; Retake Quiz</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+ {% block scripts %}
+<script>
+  // Data
+  let questions = [];
+
+async function loadQuestions() {
+  const res = await fetch("/api/questions");
+  const data = await res.json();
+
+  console.log("DB Questions:", data);
+
+  questions = data;
+
+  renderQuestion();
+}
+
+  const doshaResults = {
+    vata: {
+      name: "Vata",
+      element: "Air + Space",
+      description:
+        "You are creative, energetic, and quick-thinking. Vata types are naturally thin, have variable appetite, and tend to be cold.",
+      characteristics: [
+        "Creative and imaginative",
+        "Quick thinking and talking",
+        "Loves travel and change",
+        "Light sleeper",
+        "Dry skin and hair",
+      ],
+      recommendations: {
+        diet: ["Warm, cooked foods", "Sweet, sour, and salty tastes", "Regular meal times", "Avoid cold, raw foods"],
+        lifestyle: ["Regular daily routine", "Warm oil massage", "Gentle yoga and meditation", "Early bedtime"],
+        herbs: ["Ashwagandha", "Brahmi", "Jatamansi", "Shankhpushpi"],
+      },
+      color: "blue",
+    },
+    pitta: {
+      name: "Pitta",
+      element: "Fire + Water",
+      description:
+        "You are intelligent, focused, and determined. Pitta types have strong digestion, medium build, and tend to run warm.",
+      characteristics: [
+        "Strong leadership qualities",
+        "Good digestion",
+        "Competitive nature",
+        "Warm body temperature",
+        "Sharp intellect",
+      ],
+      recommendations: {
+        diet: ["Cool, fresh foods", "Sweet, bitter, and astringent tastes", "Avoid spicy, oily foods", "Plenty of water"],
+        lifestyle: ["Avoid excessive heat", "Cooling activities", "Moderate exercise", "Stress management"],
+        herbs: ["Aloe Vera", "Neem", "Coriander", "Fennel"],
+      },
+      color: "red",
+    },
+    kapha: {
+      name: "Kapha",
+      element: "Earth + Water",
+      description:
+        "You are calm, stable, and nurturing. Kapha types have strong immunity, larger build, and tend to gain weight easily.",
+      characteristics: [
+        "Calm and peaceful nature",
+        "Strong immunity",
+        "Good long-term memory",
+        "Steady energy",
+        "Thick, lustrous hair",
+      ],
+      recommendations: {
+        diet: [
+          "Light, warm foods",
+          "Pungent, bitter, and astringent tastes",
+          "Avoid heavy, oily foods",
+          "Smaller portions",
+        ],
+        lifestyle: ["Regular vigorous exercise", "Stay active and motivated", "Dry brushing", "Wake up early"],
+        herbs: ["Ginger", "Turmeric", "Trikatu", "Guggul"],
+      },
+      color: "green",
+    },
+  };
+  
+
+  // State variables
+  let currentQuestion = 0;
+  let answers = {}; // questionId: value
+
+  // Cached DOM elements
+  const questionText = document.getElementById("question-text");
+  const optionsList = document.getElementById("options-list");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const questionCounter = document.getElementById("question-counter");
+  const progressPercent = document.getElementById("progress-percent");
+  const progressFill = document.getElementById("progress-fill");
+
+  const quizHeader = document.getElementById("quiz-header");
+  const questionContainer = document.getElementById("question-container");
+  const progressContainer = document.getElementById("progress-container");
+  const navButtons = document.querySelector(".nav-buttons");
+
+  const resultContainer = document.getElementById("result-container");
+  const resultDescription = document.getElementById("result-description");
+  const doshaCircle = document.getElementById("dosha-circle");
+  const doshaElement = document.getElementById("dosha-element");
+  const doshaDistribution = document.getElementById("dosha-distribution");
+  const characteristicsList = document.getElementById("characteristics-list");
+  const herbsList = document.getElementById("herbs-list");
+  const dietList = document.getElementById("diet-list");
+  const lifestyleList = document.getElementById("lifestyle-list");
+
+  const downloadBtn = document.getElementById("download-btn");
+  const shareBtn = document.getElementById("share-btn");
+  const resetBtn = document.getElementById("reset-btn");
+
+  function renderQuestion() {
+    const q = questions[currentQuestion];
+    questionText.textContent = q.question;
+    questionCounter.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+    const progress = Math.round(((currentQuestion + 1) / questions.length) * 100);
+    progressPercent.textContent = `${progress}% Complete`;
+    progressFill.style.width = progress + "%";
+
+    optionsList.innerHTML = "";
+    q.options.forEach((opt, i) => {
+      const li = document.createElement("li");
+      li.className = answers[q.id] === opt.value ? "selected" : "";
+      li.tabIndex = 0;
+      li.setAttribute("role", "radio");
+      li.setAttribute("aria-checked", answers[q.id] === opt.value ? "true" : "false");
+      li.setAttribute("aria-labelledby", `option-label-${i}`);
+
+      // Radio input hidden but accessible for keyboard
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "option";
+      radio.value = opt.value;
+      radio.id = `option-${i}`;
+      radio.checked = answers[q.id] === opt.value;
+      radio.style.display = "none";
+      radio.tabIndex = -1;
+
+      li.appendChild(radio);
+
+      const label = document.createElement("label");
+      label.htmlFor = `option-${i}`;
+      label.id = `option-label-${i}`;
+      label.textContent = opt.text;
+      li.appendChild(label);
+
+      li.addEventListener("click", () => {
+        selectAnswer(q.id, opt.value);
+      });
+      li.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectAnswer(q.id, opt.value);
+        }
+      });
+
+      optionsList.appendChild(li);
+    });
+
+    prevBtn.disabled = currentQuestion === 0;
+    nextBtn.disabled = !answers[q.id];
+    nextBtn.textContent = currentQuestion === questions.length - 1 ? "Get Results →" : "Next →";
+  }
+
+  function selectAnswer(questionId, value) {
+    answers[questionId] = value;
+    renderQuestion();
+  }
+
+  prevBtn.addEventListener("click", () => {
+    if (currentQuestion > 0) {
+      currentQuestion--;
+      renderQuestion();
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    if (!answers[questions[currentQuestion].id]) return;
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  function calculateDoshaScores() {
+    const scores = { vata: 0, pitta: 0, kapha: 0 };
+    Object.values(answers).forEach(ans => {
+      if (scores[ans] !== undefined) {
+        scores[ans]++;
+      }
+    });
+    return scores;
+  }
+
+  function getDominantDosha(scores) {
+    return Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b));
+  }
+
+  function showResults() {
+    // Hide quiz UI
+    quizHeader.style.display = "none";
+    questionContainer.style.display = "none";
+    progressContainer.style.display = "none";
+    navButtons.style.display = "none";
+
+    // Show results
+    resultContainer.style.display = "block";
+
+    const scores = calculateDoshaScores();
+    const dominant = getDominantDosha(scores);
+    const result = doshaResults[dominant];
+
+    resultDescription.textContent = result.description;
+    doshaCircle.textContent = result.name[0];
+    doshaCircle.className = `dosha-circle ${result.color}`;
+    doshaElement.textContent = result.element;
+
+    // Dosha distribution bars
+    const totalAnswers = questions.length;
+    doshaDistribution.innerHTML = "";
+    Object.entries(scores).forEach(([dosha, score]) => {
+      const percent = Math.round((score / totalAnswers) * 100);
+      const doshaName = doshaResults[dosha].name;
+
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "dosha-label";
+      labelDiv.innerHTML = `<span>${doshaName}</span><span>${percent}%</span>`;
+
+      const barDiv = document.createElement("div");
+      barDiv.className = "dosha-bar";
+
+      const fillDiv = document.createElement("div");
+      fillDiv.className = "dosha-fill " + (dosha === "vata" ? "vata-fill" : dosha === "pitta" ? "pitta-fill" : "kapha-fill");
+      fillDiv.style.width = percent + "%";
+
+      barDiv.appendChild(fillDiv);
+      doshaDistribution.appendChild(labelDiv);
+      doshaDistribution.appendChild(barDiv);
+    });
+
+    // Characteristics list
+    characteristicsList.innerHTML = "";
+    result.characteristics.forEach(char => {
+      const li = document.createElement("li");
+      li.textContent = char;
+      characteristicsList.appendChild(li);
+    });
+
+    // Herbs badges
+    herbsList.innerHTML = "";
+    result.recommendations.herbs.forEach(herb => {
+      const span = document.createElement("span");
+      span.className = "badge-outline";
+      span.textContent = herb;
+      herbsList.appendChild(span);
+    });
+
+    // Diet recommendations
+    dietList.innerHTML = "";
+    result.recommendations.diet.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      dietList.appendChild(li);
+    });
+
+    // Lifestyle tips
+    lifestyleList.innerHTML = "";
+    result.recommendations.lifestyle.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      lifestyleList.appendChild(li);
+    });
+
+    // Save data for download and share
+    window.currentReport = {
+      userName: "User",
+      date: new Date().toLocaleDateString(),
+      primaryDosha: result.name,
+      doshaScores: scores,
+      recommendations: result.recommendations,
+      characteristics: result.characteristics,
+      description: result.description,
+    };
+    // ✅ SEND DOSHA TO BACKEND
+fetch("/api/save-dosha", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    dosha: dominant
+  })
+});
+  }
+
+  // Download report as text file
+  downloadBtn.addEventListener("click", () => {
+    const data = window.currentReport;
+    if (!data) return alert("No report to download.");
+
+    const total = questions.length;
+    const { doshaScores, characteristics, recommendations, userName, date, primaryDosha } = data;
+
+    const content = `
+AYURVEDA DOSHA ASSESSMENT REPORT
+================================
+
+Name: ${userName}
+Date: ${date}
+Primary Dosha: ${primaryDosha}
+
+DOSHA DISTRIBUTION:
+- Vata: ${Math.round((doshaScores.vata / total) * 100)}%
+- Pitta: ${Math.round((doshaScores.pitta / total) * 100)}%
+- Kapha: ${Math.round((doshaScores.kapha / total) * 100)}%
+
+KEY CHARACTERISTICS:
+${characteristics.map(c => `• ${c}`).join("\n")}
+
+DIET RECOMMENDATIONS:
+${recommendations.diet.map(d => `• ${d}`).join("\n")}
+
+LIFESTYLE RECOMMENDATIONS:
+${recommendations.lifestyle.map(l => `• ${l}`).join("\n")}
+
+RECOMMENDED HERBS:
+${recommendations.herbs.map(h => `• ${h}`).join("\n")}
+
+Generated by AyurVeda Quiz App
+`;
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `dosha-report-${new Date().toISOString().split("T")[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Share results (uses Web Share API or fallback)
+  shareBtn.addEventListener("click", async () => {
+    const data = window.currentReport;
+    if (!data) return alert("No report to share.");
+
+    const shareData = {
+      title: `My Ayurveda Dosha Result: ${data.primaryDosha}`,
+      text: `I just discovered my Ayurvedic constitution! My primary dosha is ${data.primaryDosha}. ${data.description}`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        alert("Sharing failed.");
+        console.error(err);
+      }
+    } else {
+      // fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(`${shareData.title}\n\n${shareData.text}\n\n${shareData.url}`);
+        alert("Results copied to clipboard!");
+      } catch (err) {
+        alert("Clipboard copy failed.");
+      }
+    }
+  });
+
+  // Reset quiz to start over
+  resetBtn.addEventListener("click", () => {
+    currentQuestion = 0;
+    answers = {};
+    resultContainer.style.display = "none";
+    quizHeader.style.display = "block";
+    questionContainer.style.display = "block";
+    progressContainer.style.display = "block";
+    navButtons.style.display = "flex";
+    renderQuestion();
+  });
+
+  // Initialize
+  loadQuestions();
+  
+
+</script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/yoga.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <h1>Yoga & Meditation</h1>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showYoga()">Yoga</button>
+    <button class="tab" onclick="showMeditation()">Meditation</button>
+  </div>
+
+  <!-- Search -->
+  <div class="filters">
+    <input type="search" id="search" placeholder="Search practices..." />
+  </div>
+  <div>
+    <div class="filter-buttons">
+  <button class="filter-btn active" onclick="filterLevel('All', this)">All</button>
+  <button class="filter-btn" onclick="filterLevel('Beginner', this)">Beginner</button>
+  <button class="filter-btn" onclick="filterLevel('Intermediate', this)">Intermediate</button>
+  <button class="filter-btn" onclick="filterLevel('Advanced', this)">Advanced</button>
+</div>
+  </div>
+
+  <!-- Data -->
+  <div class="grid" id="container"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+let yogaData = [];
+let meditationData = [];
+let current = [];
+
+// ✅ FETCH DATA
+async function loadData() {
+  const res = await fetch("/api/data");
+  const data = await res.json();
+
+  yogaData = data.yoga;
+  meditationData = data.meditation;
+
+  current = yogaData;
+  render(current);
+}
+
+// ✅ RENDER
+function render(data) {
+  const container = document.getElementById("container");
+
+  container.innerHTML = data.map(item => `
+    <div class="card">
+
+      ${item.image ? `<img src="${item.image}" class="yoga-img">` : ""}
+
+      <div class="yoga-body">
+        <h3>${item.name}</h3>
+
+        <div class="meta">
+          <span>⏱ ${item.duration}</span>
+          <span>🧘 ${item.level}</span>
+        </div>
+
+        <p class="desc">${item.description}</p>
+
+       
+
+        <div class="steps-box">
+          <div class="steps-title">Steps:</div>
+          <ol>
+            ${(item.steps || []).map(s => `<li>${s}</li>`).join("")}
+          </ol>
+        </div>
+         <!-- ✅ DOSHA -->
+        ${item.dosha ? `
+          <p><b>⚖️ Suitable for:</b> ${item.dosha.join(", ")}</p>
+        ` : ""}
+
+        <!-- ❌ NOT FOR -->
+        ${item.notFor ? `
+          <p style="color:red;"><b>⚠️ Avoid if:</b> ${item.notFor.join(", ")}</p>
+        ` : ""}
+
+      </div>
+    </div>
+  `).join("");
+}
+
+// ✅ BUTTONS
+function showYoga() {
+  current = yogaData;
+  render(current);
+}
+
+function showMeditation() {
+  current = meditationData;
+  render(current);
+}
+function filterLevel(level) {
+  const filtered = yogaData.filter(item => item.level === level);
+  render(filtered);
+}
+
+// ✅ SEARCH
+document.getElementById("search").addEventListener("input", (e) => {
+  const value = e.target.value.toLowerCase();
+
+  const filtered = current.filter(item =>
+    item.name.toLowerCase().includes(value) ||      // 🔍 name
+    item.level.toLowerCase().includes(value) ||     // 🧘 level
+    (item.dosha && item.dosha.join(" ").toLowerCase().includes(value)) // ⚖️ dosha
+  );
+
+  render(filtered);
+});
+
+// INIT
+loadData();
+</script>
+
+{% endblock %}

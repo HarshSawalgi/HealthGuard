@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/remedies.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="remedies-container">
+
+
+  <!-- 🌸 Remedies Search Section -->
+  <div class="remedies-box">
+    <h1 class="heading">🌿 Ayurvedic Home Remedies</h1>
+
+    <form method="POST" class="search-form">
+      <input type="text" name="query" placeholder="Enter disease or dosha (e.g., cold, Vata)"
+             class="search-box" value="{{ query }}">
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    {% if results and results|length > 0 %}
+      <div class="remedy-list">
+        {% for r in results %}
+          <div class="remedy-card">
+            <h2>{{ r.disease }}</h2>
+            <p><strong>Ingredients:</strong> {{ r.ingredients }}</p>
+            <p><strong>Method:</strong> {{ r.method }}</p>
+            <p><strong>Frequency:</strong> {{ r.frequency }}</p>
+            <p><strong>Dosha:</strong> {{ r.dosha }}</p>
+            <p><strong>Category:</strong> {{ r.category }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% elif query %}
+      <p class="no-result">❌ Sorry, no remedies found for "<strong>{{ query }}</strong>".</p>
+    {% endif %}
+  </div>
+
+
+
+    
+  </div>
+
+ <div class="dot-container">
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+<span class="dot"></span>  
+</div>
+
+</div>
+
+<!-- 🧠 Slider Script -->
+<script>
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let slides = document.getElementsByClassName("slide");
+  let dots = document.getElementsByClassName("dot");
+
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+
+  slideIndex++;
+  if (slideIndex > slides.length) { slideIndex = 1 }    
+
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].classList.remove("active");
+  }
+
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].classList.add("active");
+  setTimeout(showSlides, 4000); // Change image every 4 seconds
+}
+</script>
+
+{% endblock %}

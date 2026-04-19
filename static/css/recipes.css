@@ -1,0 +1,105 @@
+/* 🌿 Container */
+.remedies-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 📦 Box */
+.remedies-box {
+  width: 100%;
+  max-width: 900px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* 🌿 Heading */
+.heading {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2f855a;
+  margin-bottom: 20px;
+}
+
+/* 🔍 Search */
+.search-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #c6f6d5;
+  border-radius: 8px;
+  outline: none;
+}
+
+.search-box:focus {
+  border-color: #38a169;
+}
+
+.search-btn {
+  background: #38a169;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-btn:hover {
+  background: #2f855a;
+}
+
+/* 📋 Cards */
+.remedy-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* 🟩 Individual Card */
+.remedy-card {
+  background: #f0fff4;
+  border-left: 6px solid #38a169;
+  padding: 15px;
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.remedy-card:hover {
+  transform: scale(1.02);
+}
+
+/* 🧾 Title */
+.remedy-card h2 {
+  color: #2f855a;
+  margin-bottom: 10px;
+}
+
+/* 📝 Text */
+.remedy-card p {
+  margin: 5px 0;
+  color: #2d3748;
+}
+
+/* 📌 Lists */
+.remedy-card ul,
+.remedy-card ol {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+/* ❌ No Result */
+.no-result {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+}

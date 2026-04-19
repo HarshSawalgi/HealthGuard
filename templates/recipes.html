@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/recipes.css') }}">
+<style>
+.remedy-card {
+  background: #ffffff;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.remedy-card h2 {
+  color: #2c7a7b;
+}
+.search-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.search-box {
+  flex: 1;
+  padding: 10px;
+}
+.search-btn {
+  padding: 10px 15px;
+  background: #2c7a7b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="remedies-container">
+  <div class="remedies-box">
+
+    <h1 class="heading">🍲 Ayurvedic Recipes</h1>
+
+    <!-- 🔍 SEARCH -->
+    <form onsubmit="searchRecipes(event)" class="search-form">
+      <input type="text" id="searchInput"
+             placeholder="Enter ingredient or recipe (e.g., milk, khichdi)"
+             class="search-box">
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    <!-- RESULTS -->
+    <div id="resultsContainer"></div>
+
+  </div>
+</div>
+
+<script>
+async function searchRecipes(event) {
+  event.preventDefault();
+
+  const query = document.getElementById("searchInput").value;
+  const container = document.getElementById("resultsContainer");
+
+  container.innerHTML = "⏳ Loading recipes...";
+
+  try {
+    const res = await fetch(`/api/recipes?search=${encodeURIComponent(query)}`);
+    const data = await res.json();
+
+    if (!data || data.length === 0) {
+      container.innerHTML = `❌ No recipes found for "${query}"`;
+      return;
+    }
+
+    container.innerHTML = data.map(recipe => `
+      <div class="remedy-card">
+        <h2>🍛 ${recipe.name}</h2>
+
+        <p><b>🧾 Ingredients:</b><br>
+        ${recipe.ingredients.join(", ")}</p>
+
+        <p><b>👨‍🍳 Process:</b><br>
+        ${recipe.process.join("<br>")}</p>
+
+        <p><b>🌿 Benefits:</b><br>
+        ${recipe.benefits.join(", ")}</p>
+
+        <p><b>⚖️ Suitable for Dosha:</b> ${recipe.dosha}</p>
+      </div>
+    `).join("");
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "❌ Error loading recipes";
+  }
+}
+</script>
+{% endblock %}
